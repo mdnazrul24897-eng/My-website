@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Juice Bar System</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #dff9fb, #f6e58d);
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+h1{
+    text-align:center;
+    color:green;
+}
+
+.item{
+    display:flex;
+    justify-content:space-between;
+    padding:10px;
+    border-bottom:1px solid #eee;
+}
+
+button{
+    background:green;
+    color:white;
+    border:none;
+    padding:6px 12px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:darkgreen;
+}
+
+.total{
+    font-size:22px;
+    margin-top:15px;
+    font-weight:bold;
+    color:blue;
+}
+
+select{
+    padding:5px;
+    margin-top:10px;
+}
+
+.order-box{
+    margin-top:15px;
+    padding:10px;
+    background:#f1f2f6;
+    border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🥤 Juice Bar System</h1>
+
+<div id="menu"></div>
+
+<div class="total">
+Total: ৳<span id="total">0</span>
+</div>
+
+<hr>
+
+<label>Booking Type:</label><br>
+<select id="booking">
+    <option value="Paid">Paid</option>
+    <option value="Reservation">Reservation</option>
+</select>
+
+<br><br>
+
+<button onclick="confirmOrder()">Confirm Order</button>
+
+<div class="order-box" id="orderBox"></div>
+
+</div>
+
+<script>
+// ---------------- MENU DATA ----------------
+const juices = [
+ {name:"Mango Juice", price:120},
+ {name:"Orange Juice", price:100},
+ {name:"Apple Juice", price:150},
+ {name:"Pineapple Juice", price:120},
+ {name:"Watermelon Juice", price:80},
+ {name:"Lemon Juice", price:60},
+ {name:"Carrot Juice", price:90},
+ {name:"Mixed Fruit Juice", price:180},
+ {name:"Coconut Water", price:70},
+ {name:"Strawberry Juice", price:160}
+];
+
+let total = 0;
+let selectedItems = [];
+
+// ---------------- LOAD MENU ----------------
+const menuDiv = document.getElementById("menu");
+
+juices.forEach((item, index)=>{
+    const div = document.createElement("div");
+    div.className = "item";
+
+    div.innerHTML = `
+        <span>${item.name} - ৳${item.price}</span>
+        <button onclick="addItem(${index})">Select</button>
+    `;
+
+    menuDiv.appendChild(div);
+});
+
+// ---------------- ADD ITEM ----------------
+function addItem(i){
+    total += juices[i].price;
+    selectedItems.push(juices[i].name);
+
+    document.getElementById("total").innerText = total;
+}
+
+// ---------------- ORDER CONFIRM ----------------
+function confirmOrder(){
+    let date = new Date();
+    let booking = document.getElementById("booking").value;
+
+    document.getElementById("orderBox").innerHTML = `
+        <h3>📦 Order Summary</h3>
+        <p><b>Items:</b> ${selectedItems.join(", ")}</p>
+        <p><b>Total:</b> ৳${total}</p>
+        <p><b>Booking Type:</b> ${booking}</p>
+        <p><b>Date:</b> ${date.toLocaleDateString()}</p>
+        <p><b>Time:</b> ${date.toLocaleTimeString()}</p>
+    `;
+}
+</script>
+
+</body>
+</html>
